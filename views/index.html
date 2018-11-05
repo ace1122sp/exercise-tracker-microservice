@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style.css">
+  <title>Exercise Tracker</title>
+</head>
+<body>
+  <main>
+    <h1>Exercise Tracker</h1>
+    <section>
+      <form method='' action=''>
+        <fieldset>
+          <legend>Create a New User</legend>
+          <code>POST /api/exercise/new-user</code><br />
+          <input type='text' id='username' placeholder='username' required='true' /><br />
+          <button type='submit'>Submit</button>
+        </fieldset>
+      </form>
+      <form method='' action=''>
+        <fieldset>
+          <legend>Add exercises</legend>
+          <code>POST /api/exercise/add</code><br />
+          <input type='text' id='userId' placeholder='userId*' required='true' /><br />
+          <input type='text' id='description' placeholder='description*' required='true' /><br />
+          <input type='text' id='duration' placeholder='duration* (minutes)' required='true' /><br />
+          <input type='text' id='date' placeholder='date (yyyy-mm-dd)' /><br />
+          <button type='submit'>Submit</button>
+        </fieldset>
+      </form>
+    </section>
+    <section>
+      <p>
+        <b>GET users's exercise log: </b>
+        <code>GET /api/exercise/log?{userId}[&from][&to][&limit]</code>
+      </p>
+      <p><b>{}</b> = required, <b>[]</b> = optional</p>
+      <p><b>from, to</b> = dates (yyyy-mm-dd); <b>limit</b> = number</p>
+    </section>
+  </main>
+</body>
+</html>
