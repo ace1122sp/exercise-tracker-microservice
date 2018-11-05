@@ -1,0 +1,25 @@
+{
+  "name": "exercise-tracker-microservice",
+  "version": "1.0.0",
+  "description": "project for freeCodeCamp",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ace1122sp/exercise-tracker-microservice.git"
+  },
+  "author": "ace11",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ace1122sp/exercise-tracker-microservice/issues"
+  },
+  "homepage": "https://github.com/ace1122sp/exercise-tracker-microservice#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "mongoose": "^5.3.9"
+  }
+}
