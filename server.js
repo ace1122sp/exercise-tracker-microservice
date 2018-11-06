@@ -27,6 +27,7 @@ app.use(urlencodedParser);
 app.use('/public', express.static(PUBLIC));
 
 // implement router
+app.use('/api/exercise', router);
 app.get('/', (req, res) => {
   res.sendFile(process.cwd() + '/views/index.html');
 });
