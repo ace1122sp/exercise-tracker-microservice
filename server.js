@@ -18,6 +18,13 @@ const PUBLIC = path.resolve(__dirname, 'public');
 const PORT = config.app.port;
 
 // set up database 
+mongoose.Promise = global.Promise;
+const db = mongoose.connection;
+
+db.on('error', err => console.log(err));
+db.once('open', () => {
+  console.log(`Server started on port ${PORT}`);
+});
 
 // implement middlewares
 app.use(cors());
@@ -33,5 +40,6 @@ app.get('/', (req, res) => {
 });
 
 // mount server
-app.listen(PORT, () => console.log(`server listening on ${PORT}`));
-
+app.listen(PORT, () => {
+  mongoose.connect(config.db.mongoURI, { useNewUrlParser: true });
+});

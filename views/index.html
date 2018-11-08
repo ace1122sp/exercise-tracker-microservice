@@ -11,11 +11,11 @@
   <main>
     <h1>Exercise Tracker</h1>
     <section>
-      <form method='' action=''>
+      <form method='POST' action='api/exercise/new-user'>
         <fieldset>
           <legend>Create a New User</legend>
           <code>POST /api/exercise/new-user</code><br />
-          <input type='text' id='username' placeholder='username' required='true' /><br />
+          <input type='text' id='username' name='username' placeholder='username' required='true' /><br />
           <button type='submit'>Submit</button>
         </fieldset>
       </form>
