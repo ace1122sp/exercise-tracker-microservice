@@ -2,8 +2,8 @@ const User = require('./User');
 
 module.exports = (() => {
   _errorHandler = (err, cb) => {
-    console.error(err);
-    cb({ error: 'Internal server error' }, 500);
+    console.error(err.message);
+    cb({ error: 'Bad request' }, 400);
   }
 
   const createUser = (username, cb) => {
@@ -23,8 +23,43 @@ module.exports = (() => {
       })
       .catch(err => _errorHandler(err, cb));
   }
-  const getAllUsers = cb => {}
-  const addExercise = (userId, exercise, cb) => {}
+  const getAllUsers = cb => {
+    User.find()
+      .then(rec => {
+        const response = [];
+        
+        rec.forEach(user => {
+          response.push({ username: user.username, _id: user._id });
+        });
+        cb(response, 200);
+      })
+      .catch(err => _errorHandler(err, cb));
+  }
+  const addExercise = (userId, exercise, cb) => {
+    
+    // find user
+    User.findById(userId)
+      .then(rec => {
+        if (rec) {       
+
+          // update log
+          rec.log.push(exercise);
+          rec.save()
+            .then(rec => {
+              const lastExercise = rec.log.pop();
+              const response = { username: rec.username, _id: rec._id, description: lastExercise.description, duration: lastExercise.duration, date: lastExercise.date.toDateString() };
+              
+              cb(response, 200);
+            })
+            .catch(err => _errorHandler(err, cb));          
+        } else { 
+
+          // if user with given ID does not exist
+          cb({ message: 'Invalid user ID' }, 200);
+        }
+      })
+      .catch(err => _errorHandler(err, cb));
+  }
   const getLog = (params, cb) => {
     const { userId, from, to, limit } = params;
   }

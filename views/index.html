@@ -19,14 +19,14 @@
           <button type='submit'>Submit</button>
         </fieldset>
       </form>
-      <form method='' action=''>
+      <form method='POST' action='api/exercise/add'>
         <fieldset>
           <legend>Add exercises</legend>
           <code>POST /api/exercise/add</code><br />
-          <input type='text' id='userId' placeholder='userId*' required='true' /><br />
-          <input type='text' id='description' placeholder='description*' required='true' /><br />
-          <input type='text' id='duration' placeholder='duration* (minutes)' required='true' /><br />
-          <input type='text' id='date' placeholder='date (yyyy-mm-dd)' /><br />
+          <input type='text' id='userId' name='userId' placeholder='userId*' required='true' /><br />
+          <input type='text' id='description' name='description' placeholder='description*' required='true' /><br />
+          <input type='text' id='duration' name='duration' placeholder='duration* (minutes)' required='true' /><br />
+          <input type='text' id='date' name='date' placeholder='date (yyyy-mm-dd)' /><br />
           <button type='submit'>Submit</button>
         </fieldset>
       </form>
