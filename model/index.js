@@ -67,14 +67,21 @@ module.exports = (() => {
 
           // filter log
           let filteredLog = [...rec.log];
+
           if (from) filteredLog = filteredLog.filter(exercise => exercise.date > from);
           if (to) filteredLog = filteredLog.filter(exercise => exercise.date < to);
-          if (limit) filteredLog = filteredLog.slice(0, limit - 1);
+          if (limit) filteredLog = filteredLog.slice(0, limit);
+
+          // convert date to human-readable format
+          filteredLog = filteredLog.map(exercise => {
+            const formatedDate = new Date(exercise.date).toDateString();
+            const { description, duration } = exercise;
+            return { description, duration, date: formatedDate };            
+          });
+                  
+          const count = rec.log.length;
+          const response = Object.assign({}, { username: rec.username, _id: rec._id , log: filteredLog, count });
           
-          // STOPPED HERE ---> now you need to format the response for the end user 
-          // const response = Object.assign({}, { ...rec }, { log: filteredLog }); // something wrong with the response
-          const response = Object.assign({}, { username: rec.username, _id: rec._id , log: filteredLog });
-        
           cb(response, 200);
         } else {
           _userNotFound(cb);
