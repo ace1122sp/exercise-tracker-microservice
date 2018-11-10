@@ -1,9 +1,13 @@
 const User = require('./User');
 
 module.exports = (() => {
-  _errorHandler = (err, cb) => {
+  const _errorHandler = (err, cb) => {
     console.error(err.message);
     cb({ error: 'Bad request' }, 400);
+  }
+
+  const _userNotFound = cb => {
+    cb({ message: 'Invalid user ID' }, 404);
   }
 
   const createUser = (username, cb) => {
@@ -24,14 +28,9 @@ module.exports = (() => {
       .catch(err => _errorHandler(err, cb));
   }
   const getAllUsers = cb => {
-    User.find()
+    User.find({}, 'username _id')
       .then(rec => {
-        const response = [];
-        
-        rec.forEach(user => {
-          response.push({ username: user.username, _id: user._id });
-        });
-        cb(response, 200);
+        cb(rec, 200);
       })
       .catch(err => _errorHandler(err, cb));
   }
@@ -47,21 +46,41 @@ module.exports = (() => {
           rec.save()
             .then(rec => {
               const lastExercise = rec.log.pop();
-              const response = { username: rec.username, _id: rec._id, description: lastExercise.description, duration: lastExercise.duration, date: lastExercise.date.toDateString() };
+              const response = { username: rec.username, _id: rec._id, description: lastExercise.description, duration: lastExercise.duration, date: new Date(lastExercise.date).toDateString() };
               
               cb(response, 200);
             })
             .catch(err => _errorHandler(err, cb));          
         } else { 
-
-          // if user with given ID does not exist
-          cb({ message: 'Invalid user ID' }, 200);
+          _userNotFound(cb);
         }
       })
       .catch(err => _errorHandler(err, cb));
   }
   const getLog = (params, cb) => {
     const { userId, from, to, limit } = params;
+
+    // try to find user
+    User.findById(userId, 'username _id log')
+      .then(rec => {
+        if (rec) {
+
+          // filter log
+          let filteredLog = [...rec.log];
+          if (from) filteredLog = filteredLog.filter(exercise => exercise.date > from);
+          if (to) filteredLog = filteredLog.filter(exercise => exercise.date < to);
+          if (limit) filteredLog = filteredLog.slice(0, limit - 1);
+          
+          // STOPPED HERE ---> now you need to format the response for the end user 
+          // const response = Object.assign({}, { ...rec }, { log: filteredLog }); // something wrong with the response
+          const response = Object.assign({}, { username: rec.username, _id: rec._id , log: filteredLog });
+        
+          cb(response, 200);
+        } else {
+          _userNotFound(cb);
+        }
+      })
+      .catch(err => _errorHandler(err, cb));
   }
 
   return {
@@ -69,5 +88,6 @@ module.exports = (() => {
     getAllUsers,
     addExercise,
     getLog
+
   }
 })();

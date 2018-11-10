@@ -16,8 +16,8 @@ const ExerciseSchema = new Schema({
     max: 100000
   },
   date: {
-    type: Date,
-    default: Date.now
+    type: Number,
+    default: Date.now()
   }
 });
 

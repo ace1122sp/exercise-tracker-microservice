@@ -24,12 +24,23 @@ module.exports = {
     if (date && typeof date != 'string') return res.status(200).send({ message: 'Invalid data format' });
     
     const exercise = { description, duration };
-    if (date) exercise.date = date;
+    if (date) exercise.date = Date.parse(date);
 
     model.addExercise(userId, exercise, (dbRes, code) => {
       res.status(code).send(dbRes);
     });
   },
-  // getUserLog: (req, res) => {}
+  getUserLog: (req, res) => {
+    const userId = req.query.userId.toString() || null;
+    const from = Date.parse(req.query.from) || null;
+    const to = Date.parse(req.query.to) || null;
+    const limit = parseInt(req.query.limit) || null;
+
+    const params = { userId, from, to, limit };
+    
+    model.getLog(params, (dbRes, code) => {      
+      res.status(code).send(dbRes);
+    });
+  }
 };
 
