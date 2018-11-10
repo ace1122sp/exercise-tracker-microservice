@@ -5,6 +5,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const helmet = require('helmet');
 
 const router = require('./router');
 
@@ -27,6 +28,7 @@ db.once('open', () => {
 });
 
 // implement middlewares
+app.use(helmet());
 app.use(cors());
 app.use(jsonParser);
 app.use(urlencodedParser);
